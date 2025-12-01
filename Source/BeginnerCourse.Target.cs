@@ -3,13 +3,13 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class BegginerCourseTarget : TargetRules
+public class BeginnerCourseTarget : TargetRules
 {
-	public BegginerCourseTarget(TargetInfo Target) : base(Target)
+	public BeginnerCourseTarget(TargetInfo target) : base(target)
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_6;
-		ExtraModuleNames.Add("BegginerCourse");
+		ExtraModuleNames.Add("BeginnerCourse");
 	}
 }
