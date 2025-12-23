@@ -19,8 +19,9 @@ void ALevelPlatform::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (PositionCurve)
+	if (PositionCurve && PlatformMesh) [[likely]]
 	{
+	
 		FOnTimelineFloat ProgressFunction;
 		ProgressFunction.BindDynamic(this, &ALevelPlatform::HandleTimelineUpdate);
 		
@@ -33,10 +34,8 @@ void ALevelPlatform::BeginPlay()
 
 void ALevelPlatform::HandleTimelineUpdate(const float Value)
 {
-	if (!IsValid(PlatformMesh)) [[unlikely]]
-	{
-		return;
-	}
+	// Platform mesh should always be valid
+	// as it's marked with UPOPERTY -> Unreal GC is aware of it
 	const FVector NewLocation = FMath::Lerp(
 		FVector{0.0, 0.0, 0.0}, // Position relative to the parent
 		TargetLocation,

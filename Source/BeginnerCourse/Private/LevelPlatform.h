@@ -21,17 +21,27 @@ protected:
 	UFUNCTION()
 	void HandleTimelineUpdate(float Value);
 	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
-	USceneComponent* Root;
+	// TObjectPtr -> UObject-aware "smart" pointer, works with GC
+	// Not ownership, as that's represented by UPROPERTY
+	// and UE can better track, relocate, validate etc. it
+	// best to use for class members
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<USceneComponent> Root;
 	
 	UPROPERTY(EditAnywhere, Category="Mesh")
-	UStaticMeshComponent* PlatformMesh;
+	TObjectPtr<UStaticMeshComponent> PlatformMesh;
 	
 	UPROPERTY(EditAnywhere, Category="Timeline")
-	UCurveFloat* PositionCurve;
+	TObjectPtr<UCurveFloat> PositionCurve;
 	
-	FTimeline PositionTimeline;
-	
+	// Value, not a pointer, but we want to edit it in editor
+	// UPROPERTY(EditAnywhere) allows that
+	// Category places in 'Timeline' group
+	// meta=(MakeEditWidget) gives a 3d 'diamond' that shows the vector
 	UPROPERTY(EditAnywhere, Category="Timeline", meta=(MakeEditWidget))
 	FVector TargetLocation;
+
+	// Value, not a pointer, no need for UPROPERTY
+	FTimeline PositionTimeline;
 };
