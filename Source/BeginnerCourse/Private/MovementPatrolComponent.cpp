@@ -1,0 +1,40 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "MovementPatrolComponent.h"
+
+UMovementPatrolComponent::UMovementPatrolComponent()
+{
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+void UMovementPatrolComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (MovementCurve && TargetComponent) [[likely]]
+	{
+		FOnTimelineFloat ProgressFunction;
+		ProgressFunction.BindDynamic(this, &UMovementPatrolComponent::HandleTimelineUpdate);
+
+		Timeline.AddInterpFloat(MovementCurve, std::move(ProgressFunction));
+		Timeline.SetLooping(true);
+
+		Timeline.PlayFromStart();
+	}
+}
+
+void UMovementPatrolComponent::TickComponent(const float DeltaTime,
+                                             [[maybe_unused]] const ELevelTick TickType,
+                                             [[maybe_unused]] FActorComponentTickFunction* const ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	Timeline.TickTimeline(DeltaTime);
+}
+
+
+void UMovementPatrolComponent::HandleTimelineUpdate(const float Value)
+{
+	const FVector NewLocation = FMath::Lerp(PointA, PointB, Value);
+	TargetComponent->SetRelativeLocation(NewLocation);
+}
