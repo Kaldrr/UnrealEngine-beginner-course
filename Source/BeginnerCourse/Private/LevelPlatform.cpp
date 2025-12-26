@@ -14,7 +14,7 @@ ALevelPlatform::ALevelPlatform()
 	PlatformMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlatformMesh"));
 	PlatformMesh->SetupAttachment(Root);
 
-	MovementComponent = CreateDefaultSubobject<UMovementPatrolComponent>(TEXT("Movement"));
+	MovementComponent = CreateDefaultSubobject<UMovementPatrolComponent>(TEXT("MovementComponent"));
 	MovementComponent->TargetComponent = PlatformMesh;
 }
 

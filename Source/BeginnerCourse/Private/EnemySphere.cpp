@@ -29,8 +29,8 @@ AEnemySphere::AEnemySphere()
 
 	FireParticleSystem = CreateDefaultSubobject<UNiagaraComponent>(TEXT("FireParticleSystem"));
 	FireParticleSystem->SetupAttachment(SphereMesh);
-	
-	MovementComponent = CreateDefaultSubobject<UMovementPatrolComponent>(TEXT("Movement"));
+
+	MovementComponent = CreateDefaultSubobject<UMovementPatrolComponent>(TEXT("MovementComponent"));
 	MovementComponent->TargetComponent = SphereMesh;
 }
 

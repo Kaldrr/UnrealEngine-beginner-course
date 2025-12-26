@@ -28,7 +28,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Mesh")
 	TObjectPtr<UStaticMeshComponent> PlatformMesh;
-	
+
 	UPROPERTY(EditAnywhere, Category="Movement")
 	TObjectPtr<UMovementPatrolComponent> MovementComponent;
 };

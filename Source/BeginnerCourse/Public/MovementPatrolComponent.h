@@ -28,7 +28,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-	void HandleTimelineUpdate(float Value);
+	void HandleTimelineUpdate(float Value) const;
 
 	FTimeline Timeline;
 
