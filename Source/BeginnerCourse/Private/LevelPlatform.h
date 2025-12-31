@@ -1,8 +1,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MovementPatrolComponent.h"
 #include "GameFramework/Actor.h"
+#include "MovementPatrolComponent.h"
+
 #include "LevelPlatform.generated.h"
 
 UCLASS()
@@ -26,9 +27,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> Root;
 
-	UPROPERTY(EditAnywhere, Category="Mesh")
+	UPROPERTY(EditAnywhere, Category = "Mesh")
 	TObjectPtr<UStaticMeshComponent> PlatformMesh;
 
-	UPROPERTY(EditAnywhere, Category="Movement")
+	UPROPERTY(EditAnywhere, Category = "Movement")
 	TObjectPtr<UMovementPatrolComponent> MovementComponent;
 };

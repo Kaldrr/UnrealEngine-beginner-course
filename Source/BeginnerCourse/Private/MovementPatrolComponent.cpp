@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "MovementPatrolComponent.h"
 
 UMovementPatrolComponent::UMovementPatrolComponent()
@@ -15,7 +12,7 @@ void UMovementPatrolComponent::BeginPlay()
 	if (MovementCurve && TargetComponent) [[likely]]
 	{
 		FOnTimelineFloat ProgressFunction{};
-		ProgressFunction.BindUFunction(this, FName{"HandleTimelineUpdate"});
+		ProgressFunction.BindUFunction(this, FName{ "HandleTimelineUpdate" });
 
 		Timeline.AddInterpFloat(MovementCurve, std::move(ProgressFunction));
 		Timeline.SetLooping(true);
@@ -24,14 +21,14 @@ void UMovementPatrolComponent::BeginPlay()
 	}
 }
 
-void UMovementPatrolComponent::TickComponent(const float DeltaTime,
-                                             const ELevelTick TickType,
-                                             FActorComponentTickFunction* const ThisTickFunction)
+void UMovementPatrolComponent::TickComponent(
+    const float DeltaTime,
+    const ELevelTick TickType,
+    FActorComponentTickFunction* const ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	Timeline.TickTimeline(DeltaTime);
 }
-
 
 void UMovementPatrolComponent::HandleTimelineUpdate(const float Value) const
 {

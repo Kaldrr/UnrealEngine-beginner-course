@@ -1,22 +1,23 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
-#include "CoreMinimal.h"
-#include "Interactable.h"
 #include "Components/TimelineComponent.h"
+#include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interactable.h"
+
 #include "RotatingDoor.generated.h"
 
 UCLASS()
-class ARotatingDoor : public AActor, public IInteractable
+class ARotatingDoor
+    : public AActor
+    , public IInteractable
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ARotatingDoor();
-	
+
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Interact_Implementation() override;
@@ -27,22 +28,22 @@ protected:
 
 	UFUNCTION()
 	void HandleTimelineUpdate(float Value) const;
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> Root;
 
-	UPROPERTY(EditAnywhere, Category="Mesh")
+	UPROPERTY(EditAnywhere, Category = "Mesh")
 	TObjectPtr<UStaticMeshComponent> DoorMesh;
-	
-	UPROPERTY(EditAnywhere, Category="Mesh")
+
+	UPROPERTY(EditAnywhere, Category = "Mesh")
 	TObjectPtr<UStaticMeshComponent> GlassMesh;
-	
+
 	FTimeline Timeline;
 
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCurveFloat> RotationCurve;
-	
+
 private:
 	FRotator StartingRotation;
-	bool HasExecuted{false};
+	bool HasExecuted{ false };
 };

@@ -1,21 +1,17 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "RotatingDoor.h"
 
 ARotatingDoor::ARotatingDoor()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
+	Root          = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = Root;
 
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
 	DoorMesh->SetupAttachment(RootComponent);
 
-	const static ConstructorHelpers::FObjectFinder<UStaticMesh> DoorMeshAsset{
-		TEXT("/Game/StarterContent/Props/SM_Door.SM_Door")
-	};
+	const static ConstructorHelpers::FObjectFinder<UStaticMesh> DoorMeshAsset{ TEXT(
+		"/Game/StarterContent/Props/SM_Door.SM_Door") };
 	if (DoorMeshAsset.Succeeded())
 	{
 		DoorMesh->SetStaticMesh(DoorMeshAsset.Object);
@@ -40,7 +36,7 @@ void ARotatingDoor::BeginPlay()
 
 void ARotatingDoor::HandleTimelineUpdate(const float Value) const
 {
-	const FRotator NewRotation = StartingRotation + FRotator{0, Value, 0};
+	const FRotator NewRotation = StartingRotation + FRotator{ 0, Value, 0 };
 	DoorMesh->SetRelativeRotation(NewRotation);
 }
 
@@ -56,13 +52,13 @@ void ARotatingDoor::Interact_Implementation()
 	{
 		return;
 	}
-	
+
 	if (RotationCurve && DoorMesh) [[likely]]
 	{
 		StartingRotation = DoorMesh->GetRelativeRotation();
-			
+
 		FOnTimelineFloat ProgressFunction{};
-		ProgressFunction.BindUFunction(this, FName{"HandleTimelineUpdate"});
+		ProgressFunction.BindUFunction(this, FName{ "HandleTimelineUpdate" });
 
 		Timeline.AddInterpFloat(RotationCurve, std::move(ProgressFunction));
 		Timeline.SetLooping(false);
