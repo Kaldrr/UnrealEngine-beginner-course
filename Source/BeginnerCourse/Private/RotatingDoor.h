@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Interactable.h"
 #include "Components/TimelineComponent.h"
 #include "GameFramework/Actor.h"
 #include "RotatingDoor.generated.h"
 
 UCLASS()
-class ARotatingDoor : public AActor
+class ARotatingDoor : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 	
@@ -17,6 +18,8 @@ public:
 	ARotatingDoor();
 	
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void Interact_Implementation() override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -41,4 +44,5 @@ protected:
 	
 private:
 	FRotator StartingRotation;
+	bool HasExecuted{false};
 };

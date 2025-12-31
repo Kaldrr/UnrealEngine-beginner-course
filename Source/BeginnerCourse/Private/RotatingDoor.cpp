@@ -36,19 +36,6 @@ ARotatingDoor::ARotatingDoor()
 void ARotatingDoor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (RotationCurve && DoorMesh) [[likely]]
-	{
-		StartingRotation = DoorMesh->GetRelativeRotation();
-		
-		FOnTimelineFloat ProgressFunction{};
-		ProgressFunction.BindUFunction(this, FName{"HandleTimelineUpdate"});
-
-		Timeline.AddInterpFloat(RotationCurve, std::move(ProgressFunction));
-		Timeline.SetLooping(false);
-
-		Timeline.PlayFromStart();
-	}
 }
 
 void ARotatingDoor::HandleTimelineUpdate(const float Value) const
@@ -61,4 +48,26 @@ void ARotatingDoor::Tick(const float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	Timeline.TickTimeline(DeltaTime);
+}
+
+void ARotatingDoor::Interact_Implementation()
+{
+	if (HasExecuted)
+	{
+		return;
+	}
+	
+	if (RotationCurve && DoorMesh) [[likely]]
+	{
+		StartingRotation = DoorMesh->GetRelativeRotation();
+			
+		FOnTimelineFloat ProgressFunction{};
+		ProgressFunction.BindUFunction(this, FName{"HandleTimelineUpdate"});
+
+		Timeline.AddInterpFloat(RotationCurve, std::move(ProgressFunction));
+		Timeline.SetLooping(false);
+
+		Timeline.PlayFromStart();
+		HasExecuted = true;
+	}
 }
