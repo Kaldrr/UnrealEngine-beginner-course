@@ -3,7 +3,7 @@
 #include "Components/TimelineComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Interactable.h"
+#include "Interfaces/Interactable.h"
 
 #include "RotatingDoor.generated.h"
 
@@ -15,7 +15,6 @@ class ARotatingDoor
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	ARotatingDoor();
 
 	virtual void Tick(float DeltaTime) override;
@@ -23,9 +22,6 @@ public:
 	virtual void Interact_Implementation() override;
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
 	UFUNCTION()
 	void HandleTimelineUpdate(float Value) const;
 

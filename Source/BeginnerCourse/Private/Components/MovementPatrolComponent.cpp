@@ -1,4 +1,4 @@
-#include "MovementPatrolComponent.h"
+#include "Components/MovementPatrolComponent.h"
 
 UMovementPatrolComponent::UMovementPatrolComponent()
 {

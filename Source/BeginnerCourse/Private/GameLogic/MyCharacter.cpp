@@ -2,7 +2,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Interactable.h"
+#include "Interfaces/Interactable.h"
 
 AMyCharacter::AMyCharacter()
 {
@@ -20,14 +20,14 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto* const PlayerController = Cast<APlayerController>(GetController());
+	const auto* const PlayerController = Cast<APlayerController>(GetController());
 	if (!PlayerController)
 	{
 		UE_LOG(LogTemp, Error, TEXT("AMyCharacter: Unexpected controller class"));
 		return;
 	}
 
-	if (auto* const LocalPlayer = PlayerController->GetLocalPlayer())
+	if (const auto* const LocalPlayer = PlayerController->GetLocalPlayer())
 	{
 		if (auto* const InputSubsystem =
 		        LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
@@ -35,16 +35,6 @@ void AMyCharacter::BeginPlay()
 			InputSubsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
-}
-
-void AMyCharacter::Tick(const float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-
-void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
 void AMyCharacter::HandleLookAction(const FInputActionValue& LookAxis)
@@ -73,8 +63,8 @@ void AMyCharacter::HandleInteractAction()
 	const FVector Start = CameraComponent->GetComponentLocation();
 	const FVector End   = Start + CameraComponent->GetForwardVector() * 300.f;
 
-	FHitResult Hit;
-	FCollisionQueryParams Params;
+	FHitResult Hit{};
+	FCollisionQueryParams Params{};
 	Params.AddIgnoredActor(this);
 
 	if (GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility,

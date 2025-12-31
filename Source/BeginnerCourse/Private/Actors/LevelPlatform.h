@@ -1,8 +1,8 @@
 #pragma once
 
+#include "Components/MovementPatrolComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "MovementPatrolComponent.h"
 
 #include "LevelPlatform.generated.h"
 
@@ -14,12 +14,8 @@ class ALevelPlatform : public AActor
 public:
 	ALevelPlatform();
 
-	virtual void Tick(float DeltaTime) override;
-
 protected:
-	virtual void BeginPlay() override;
-
-	// TObjectPtr -> UObject-aware "smart"-ish pointer, works with GC
+	// TObjectPtr -> UObject-aware pointer, works with GC
 	// Not ownership, as that's represented by UPROPERTY
 	// and UE can better track, relocate, validate etc. it
 	// best to use for class members

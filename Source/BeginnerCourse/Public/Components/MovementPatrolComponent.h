@@ -12,7 +12,6 @@ class BEGINNERCOURSE_API UMovementPatrolComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this component's properties
 	UMovementPatrolComponent();
 
 	virtual void TickComponent(

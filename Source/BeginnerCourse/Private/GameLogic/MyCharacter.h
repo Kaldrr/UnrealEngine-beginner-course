@@ -12,13 +12,7 @@ class AMyCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AMyCharacter();
-
-	virtual void Tick(float DeltaTime) override;
-
-	virtual void SetupPlayerInputComponent(
-	    UInputComponent* PlayerInputComponent) override;
 
 	// InputAction handlers
 	void HandleLookAction(const FInputActionValue& LookAxis);

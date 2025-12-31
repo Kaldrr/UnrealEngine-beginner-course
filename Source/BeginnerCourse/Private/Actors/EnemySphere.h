@@ -1,8 +1,8 @@
 #pragma once
 
+#include "Components/MovementPatrolComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "MovementPatrolComponent.h"
 #include "NiagaraComponent.h"
 
 #include "EnemySphere.generated.h"
@@ -15,10 +15,7 @@ class AEnemySphere : public AActor
 public:
 	AEnemySphere();
 
-	virtual void Tick(float DeltaTime) override;
-
 protected:
-	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> Root;

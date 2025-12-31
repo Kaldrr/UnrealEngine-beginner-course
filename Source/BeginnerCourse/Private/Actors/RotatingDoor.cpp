@@ -29,11 +29,6 @@ ARotatingDoor::ARotatingDoor()
 	}
 }
 
-void ARotatingDoor::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 void ARotatingDoor::HandleTimelineUpdate(const float Value) const
 {
 	const FRotator NewRotation = StartingRotation + FRotator{ 0, Value, 0 };

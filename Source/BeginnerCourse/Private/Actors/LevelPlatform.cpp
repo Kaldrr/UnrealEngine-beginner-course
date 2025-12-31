@@ -17,13 +17,3 @@ ALevelPlatform::ALevelPlatform()
 	    CreateDefaultSubobject<UMovementPatrolComponent>(TEXT("MovementComponent"));
 	MovementComponent->TargetComponent = PlatformMesh;
 }
-
-void ALevelPlatform::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-void ALevelPlatform::Tick(const float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
