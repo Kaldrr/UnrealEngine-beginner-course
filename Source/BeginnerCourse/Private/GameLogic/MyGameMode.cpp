@@ -1,5 +1,7 @@
 #include "MyGameMode.h"
 
+#include "Kismet/KismetSystemLibrary.h"
+
 // #include "MyCharacter.h"
 // #include "MyPlayerController.h"
 
@@ -11,4 +13,26 @@ AMyGameMode::AMyGameMode()
 
 	// PlayerControllerClass = AMyPlayerController::StaticClass();
 	// DefaultPawnClass = AMyCharacter::StaticClass();
+}
+
+void AMyGameMode::TriggerGameOver() const
+{
+	UE_LOG(LogTemp, Warning, TEXT("Game Over"));
+	OnGameOver.Broadcast();
+}
+
+void AMyGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	OnGameOver.AddDynamic(this, &AMyGameMode::GameOverHandler);
+}
+
+void AMyGameMode::GameOverHandler()
+{
+	if (const UWorld* const World = GetWorld())
+	{
+		UKismetSystemLibrary::QuitGame(World, World->GetFirstPlayerController(),
+		                               EQuitPreference::Quit, false);
+	}
 }

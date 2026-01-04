@@ -2,6 +2,7 @@
 
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameLogic/MyGameMode.h"
 #include "Interfaces/Interactable.h"
 
 AMyCharacter::AMyCharacter()
@@ -81,4 +82,44 @@ void AMyCharacter::HandleInteractAction()
 			}
 		}
 	}
+}
+
+void AMyCharacter::EndInvincibility()
+{
+	IsInvincible = false;
+}
+
+float AMyCharacter::TakeDamage(const float Damage,
+                               const FDamageEvent& DamageEvent,
+                               AController* const EventInstigator,
+                               AActor* const DamageCauser)
+{
+	// Grace period so we don't lose health 60 times in one second
+	if (IsInvincible)
+	{
+		return 0.f;
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Took %f damage from %s"), Damage,
+	       *GetNameSafe(DamageCauser));
+
+	IsInvincible = true;
+	GetWorldTimerManager().SetTimer(InvincibilityTimerHandle, this,
+	                                &AMyCharacter::EndInvincibility,
+	                                InvincibilityDuration, false);
+
+	Health -= Damage;
+	if (Health <= 0.001)
+	{
+		if (const UWorld* const World = GetWorld())
+		{
+			if (const AMyGameMode* const GameMode =
+			        World->GetAuthGameMode<AMyGameMode>())
+			{
+				GameMode->TriggerGameOver();
+			}
+		}
+	}
+
+	return Damage;
 }

@@ -14,6 +14,11 @@ class AMyCharacter : public ACharacter
 public:
 	AMyCharacter();
 
+	virtual float TakeDamage(float Damage,
+	                         const FDamageEvent& DamageEvent,
+	                         AController* EventInstigator,
+	                         AActor* DamageCauser) override;
+
 	// InputAction handlers
 	void HandleLookAction(const FInputActionValue& LookAxis);
 	void HandleMoveAction(const FInputActionValue& MoveAxis);
@@ -27,4 +32,16 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputMappingContext> DefaultMappingContext;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	float InvincibilityDuration = 0.5f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	float Health = 1.0f;
+
+private:
+	void EndInvincibility();
+
+	FTimerHandle InvincibilityTimerHandle;
+	bool IsInvincible{ false };
 };

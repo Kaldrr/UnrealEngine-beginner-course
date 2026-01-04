@@ -16,6 +16,7 @@ public:
 	AEnemySphere();
 
 protected:
+	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<USceneComponent> Root;
@@ -32,4 +33,13 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	TObjectPtr<UMovementPatrolComponent> MovementComponent;
+
+private:
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,
+	                    AActor* OtherActor,
+	                    UPrimitiveComponent* OtherComp,
+	                    int32 OtherBodyIndex,
+	                    bool bFromSweep,
+	                    const FHitResult& SweepResult);
 };

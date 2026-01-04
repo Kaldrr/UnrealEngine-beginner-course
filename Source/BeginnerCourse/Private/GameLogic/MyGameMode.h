@@ -5,6 +5,8 @@
 
 #include "MyGameMode.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameOver);
+
 UCLASS()
 class AMyGameMode : public AGameModeBase
 {
@@ -12,4 +14,16 @@ class AMyGameMode : public AGameModeBase
 
 public:
 	AMyGameMode();
+
+	UPROPERTY(BlueprintAssignable)
+	FOnGameOver OnGameOver;
+
+	void TriggerGameOver() const;
+
+protected:
+	virtual void BeginPlay() override;
+
+private:
+	UFUNCTION()
+	void GameOverHandler();
 };

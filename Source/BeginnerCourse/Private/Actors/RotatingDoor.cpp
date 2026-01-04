@@ -31,7 +31,7 @@ ARotatingDoor::ARotatingDoor()
 
 void ARotatingDoor::HandleTimelineUpdate(const float Value) const
 {
-	const FRotator NewRotation = StartingRotation + FRotator{ 0, Value, 0 };
+	const FRotator NewRotation = StartingRotation - FRotator{ 0, Value, 0 };
 	DoorMesh->SetRelativeRotation(NewRotation);
 }
 
