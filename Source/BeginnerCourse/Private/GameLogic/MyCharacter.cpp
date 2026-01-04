@@ -78,7 +78,7 @@ void AMyCharacter::HandleInteractAction()
 			// Then use the generated C++ Execute_ function to call the method
 			if (HitActor->Implements<UInteractable>())
 			{
-				IInteractable::Execute_Interact(HitActor);
+				IInteractable::Execute_Interact(HitActor, this);
 			}
 		}
 	}

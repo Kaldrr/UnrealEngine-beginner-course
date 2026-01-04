@@ -20,9 +20,9 @@ class IInteractable
 public:
 	// Interact is a stub, managed by Unreal and implementable in Blueprints
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = Trigger)
-	void Interact();
+	void Interact(AActor* Actor);
 
 	// C++ side function, that we implement to provide the logic on C++ side
 	// we also Call IInteractable::Execute_Interact, not functions directly!
-	virtual void Interact_Implementation() = 0;
+	virtual void Interact_Implementation(AActor* Actor) = 0;
 };

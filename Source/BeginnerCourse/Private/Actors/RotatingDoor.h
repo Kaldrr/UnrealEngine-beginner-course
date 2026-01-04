@@ -19,7 +19,7 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void Interact_Implementation() override;
+	virtual void Interact_Implementation(AActor* Actor) override;
 
 protected:
 	UFUNCTION()

@@ -1,5 +1,7 @@
 #include "RotatingDoor.h"
 
+#include "GameLogic/MyCharacter.h"
+
 ARotatingDoor::ARotatingDoor()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -41,9 +43,15 @@ void ARotatingDoor::Tick(const float DeltaTime)
 	Timeline.TickTimeline(DeltaTime);
 }
 
-void ARotatingDoor::Interact_Implementation()
+void ARotatingDoor::Interact_Implementation(AActor* const Actor)
 {
 	if (HasExecuted)
+	{
+		return;
+	}
+
+	if (const AMyCharacter* const MyCharacter = Cast<AMyCharacter>(Actor);
+	    !MyCharacter || MyCharacter->GetOrbsCollected() < 3)
 	{
 		return;
 	}

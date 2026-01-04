@@ -23,6 +23,16 @@ public:
 	void HandleLookAction(const FInputActionValue& LookAxis);
 	void HandleMoveAction(const FInputActionValue& MoveAxis);
 	void HandleInteractAction();
+	
+	void CollectOrb() noexcept
+	{
+		++OrbsCollected;
+	}
+	
+	[[nodiscard]] std::uint8_t GetOrbsCollected() const noexcept
+	{
+		return OrbsCollected;
+	}
 
 protected:
 	virtual void BeginPlay() override;
@@ -44,4 +54,5 @@ private:
 
 	FTimerHandle InvincibilityTimerHandle;
 	bool IsInvincible{ false };
+	std::uint8_t OrbsCollected{ 0 };
 };
