@@ -1,9 +1,15 @@
 #include "MyCharacter.h"
 
+#include "Blueprint/UserWidget.h"
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameLogic/MyGameMode.h"
 #include "Interfaces/Interactable.h"
+
+namespace
+{
+constexpr float HealthEpsilon = 0.001f;
+}
 
 AMyCharacter::AMyCharacter()
 {
@@ -34,6 +40,18 @@ void AMyCharacter::BeginPlay()
 		        LocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 		{
 			InputSubsystem->AddMappingContext(DefaultMappingContext, 0);
+		}
+	}
+
+	if (HUDClass)
+	{
+		if (MainHUD = CreateWidget<UMainHUDWidget>(GetWorld(), HUDClass);
+			MainHUD != nullptr)
+		{
+			MainHUD->AddToViewport();
+			
+			MainHUD->OnCollectedOrbsChanged(GetOrbsCollected());
+			MainHUD->OnHealthChanged(Health);
 		}
 	}
 }
@@ -83,8 +101,14 @@ void AMyCharacter::HandleInteractAction()
 		}
 	}
 }
+void AMyCharacter::CollectOrb() noexcept
+{
+	++OrbsCollected;
+	MainHUD->OnCollectedOrbsChanged(OrbsCollected);
+	MainHUD->ShowOrbCollectedTint();
+}
 
-void AMyCharacter::EndInvincibility()
+void AMyCharacter::EndInvincibility() noexcept
 {
 	IsInvincible = false;
 }
@@ -100,16 +124,13 @@ float AMyCharacter::TakeDamage(const float Damage,
 		return 0.f;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("Took %f damage from %s"), Damage,
-	       *GetNameSafe(DamageCauser));
-
 	IsInvincible = true;
 	GetWorldTimerManager().SetTimer(InvincibilityTimerHandle, this,
 	                                &AMyCharacter::EndInvincibility,
 	                                InvincibilityDuration, false);
 
 	Health -= Damage;
-	if (Health <= 0.001)
+	if (Health <= HealthEpsilon)
 	{
 		if (const UWorld* const World = GetWorld())
 		{
@@ -120,6 +141,8 @@ float AMyCharacter::TakeDamage(const float Damage,
 			}
 		}
 	}
+	MainHUD->ShowDamageTint();
+	MainHUD->OnHealthChanged(Health);
 
 	return Damage;
 }

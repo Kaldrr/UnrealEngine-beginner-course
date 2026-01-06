@@ -12,6 +12,17 @@ class UInteractable : public UInterface
 	GENERATED_BODY()
 };
 
+// TODO: This REALLY should work with another interface for the source of interaction
+// right now we just cast to AMyCharacter, as it is the ONLY possible source
+// of interaction in the game, but in real games other actors could need such
+// functionality as well
+// IInteractSource/IInteractor which would have logic if given interactable 
+// can be used
+// Or, something like FInteractContext, with common data that could be used by 
+// interaction logic
+// For this project a simple cast is ok, but there is nothing more permanent than
+// a temporary solution/hack :^)
+
 // The REAL C++ interface with functionality
 class IInteractable
 {

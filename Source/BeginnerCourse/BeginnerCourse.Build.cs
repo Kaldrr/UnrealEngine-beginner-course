@@ -10,7 +10,7 @@ public class BeginnerCourse : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(["Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput"]);
 
-		PrivateDependencyModuleNames.AddRange(["Niagara"]);
+		PrivateDependencyModuleNames.AddRange(["Niagara", "UMG"]);
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

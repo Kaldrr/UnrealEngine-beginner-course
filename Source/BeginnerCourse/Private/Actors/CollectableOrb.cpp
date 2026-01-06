@@ -45,7 +45,6 @@ void ACollectableOrb::OnBeginOverlap(
 	if (AMyCharacter* const MyCharacter = Cast<AMyCharacter>(OtherActor))
 	{
 		MyCharacter->CollectOrb();
-		UE_LOG(LogTemp, Warning, TEXT("%d"), MyCharacter->GetOrbsCollected());
 		Destroy();
 	}
 }

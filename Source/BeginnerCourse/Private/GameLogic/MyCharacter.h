@@ -3,8 +3,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "InputMappingContext.h"
+#include "Widgets/UMainHUDWidget.h"
 
 #include "MyCharacter.generated.h"
+
+class UMainHUDWidget;
 
 UCLASS()
 class AMyCharacter : public ACharacter
@@ -23,12 +26,9 @@ public:
 	void HandleLookAction(const FInputActionValue& LookAxis);
 	void HandleMoveAction(const FInputActionValue& MoveAxis);
 	void HandleInteractAction();
-	
-	void CollectOrb() noexcept
-	{
-		++OrbsCollected;
-	}
-	
+
+	void CollectOrb() noexcept;
+
 	[[nodiscard]] std::uint8_t GetOrbsCollected() const noexcept
 	{
 		return OrbsCollected;
@@ -49,10 +49,16 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float Health = 1.0f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UMainHUDWidget> HUDClass;
+
 private:
-	void EndInvincibility();
+	void EndInvincibility() noexcept;
 
 	FTimerHandle InvincibilityTimerHandle;
 	bool IsInvincible{ false };
 	std::uint8_t OrbsCollected{ 0 };
+
+	UPROPERTY()
+	TObjectPtr<UMainHUDWidget> MainHUD;
 };
