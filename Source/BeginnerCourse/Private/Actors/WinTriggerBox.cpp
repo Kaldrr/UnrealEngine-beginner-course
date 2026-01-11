@@ -1,11 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+#include "WinTriggerBox.h"
 
-#include "GameOverTriggerVolume.h"
-
+#include "Components/BoxComponent.h"
 #include "GameLogic/MyCharacter.h"
-#include "GameLogic/MyGameMode.h"
 
-AGameOverTriggerVolume::AGameOverTriggerVolume()
+AWinTriggerBox::AWinTriggerBox()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -13,15 +11,16 @@ AGameOverTriggerVolume::AGameOverTriggerVolume()
 	RootComponent = TriggerBox;
 }
 
-void AGameOverTriggerVolume::BeginPlay()
+void AWinTriggerBox::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
+	check(TriggerBox);
 	TriggerBox->OnComponentBeginOverlap.AddDynamic(
-	    this, &AGameOverTriggerVolume::OnBeginOverlap);
+	    this, &AWinTriggerBox::OnBeginOverlap);
 }
 
-void AGameOverTriggerVolume::OnBeginOverlap(
+void AWinTriggerBox::OnBeginOverlap(
     [[maybe_unused]] UPrimitiveComponent* const OverlappedComp,
     AActor* const OtherActor,
     [[maybe_unused]] UPrimitiveComponent* const OtherComp,
@@ -31,6 +30,6 @@ void AGameOverTriggerVolume::OnBeginOverlap(
 {
 	if (AMyCharacter* const MyCharacter = Cast<AMyCharacter>(OtherActor))
 	{
-		MyCharacter->TriggerGameOver();
+		MyCharacter->TriggerGameWon();
 	}
 }

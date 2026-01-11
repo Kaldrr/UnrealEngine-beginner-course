@@ -8,34 +8,50 @@ void AMyPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	auto* const MyCharacter = Cast<AMyCharacter>(GetPawn());
-	if (!MyCharacter)
-	{
-		UE_LOG(LogTemp, Error, TEXT("AMyPlayerController: Unexpected pawn class"));
-	}
+	checkf(MyCharacter, TEXT("AMyPlayerController: expectedd AMyCharacter"));
 
-	if (auto* const InputComponent =
-	        MyCharacter->GetComponentByClass<UEnhancedInputComponent>())
-	{
-		InputComponent->BindAction(JumpAction, ETriggerEvent::Triggered,
-		                           MyCharacter, &AMyCharacter::Jump);
+	auto* const EnhancedInputComponent =
+	    MyCharacter->GetComponentByClass<UEnhancedInputComponent>();
+	checkf(
+	    EnhancedInputComponent,
+	    TEXT(
+	        "EnhancedInputComponent: character doesn't support EnhancedInputComponent"));
 
-		InputComponent->BindAction(LookAction, ETriggerEvent::Triggered,
-		                           MyCharacter, &AMyCharacter::HandleLookAction);
+	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered,
+	                                   MyCharacter, &AMyCharacter::Jump);
 
-		InputComponent->BindAction(MoveAction, ETriggerEvent::Triggered,
-		                           MyCharacter, &AMyCharacter::HandleMoveAction);
+	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered,
+	                                   MyCharacter,
+	                                   &AMyCharacter::HandleLookAction);
 
-		InputComponent->BindAction(PauseAction, ETriggerEvent::Triggered, this,
-		                           &AMyPlayerController::HandlePauseAction);
+	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered,
+	                                   MyCharacter,
+	                                   &AMyCharacter::HandleMoveAction);
 
-		InputComponent->BindAction(UseObjectAction, ETriggerEvent::Triggered,
-		                           MyCharacter,
-		                           &AMyCharacter::HandleInteractAction);
-	}
+	EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Triggered, this,
+	                                   &AMyPlayerController::HandlePauseAction);
+
+	EnhancedInputComponent->BindAction(UseObjectAction, ETriggerEvent::Triggered,
+	                                   MyCharacter,
+	                                   &AMyCharacter::HandleInteractAction);
 }
 
 void AMyPlayerController::HandlePauseAction()
 {
 	const bool IsGamePaused = IsPaused();
 	SetPause(!IsGamePaused);
+
+	// MyCharacter should probably be cached
+	// Oh well too bad
+	auto* const MyCharacter = Cast<AMyCharacter>(GetPawn());
+	check(MyCharacter);
+
+	if (IsGamePaused)
+	{
+		MyCharacter->SetGameHUD();
+	}
+	else
+	{
+		MyCharacter->SetPauseHUD();
+	}
 }

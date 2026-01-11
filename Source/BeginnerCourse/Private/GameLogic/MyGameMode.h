@@ -14,16 +14,4 @@ class AMyGameMode : public AGameModeBase
 
 public:
 	AMyGameMode();
-
-	UPROPERTY(BlueprintAssignable)
-	FOnGameOver OnGameOver;
-
-	void TriggerGameOver() const;
-
-protected:
-	virtual void BeginPlay() override;
-
-private:
-	UFUNCTION()
-	void GameOverHandler();
 };

@@ -33,6 +33,14 @@ public:
 	{
 		return OrbsCollected;
 	}
+	
+	void SetPauseHUD();
+	void SetGameHUD();
+	
+	void TriggerGameOver();
+	void TriggerGameWon();
+	
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -52,8 +60,22 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UMainHUDWidget> HUDClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> PauseHUDClass;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> GameOverHUDClass;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> GameWonHUDClass;
+	
 private:
 	void EndInvincibility() noexcept;
+
+	void UpdateInteractionPrompt();
+	void HandleLineTraceCheck(const FTraceHandle& TraceHandle,
+	                          FTraceDatum& TraceDatum);
+	void SwitchToGameScreen(UUserWidget& NewWidget);
 
 	FTimerHandle InvincibilityTimerHandle;
 	bool IsInvincible{ false };
@@ -61,4 +83,17 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UMainHUDWidget> MainHUD;
+	
+	UPROPERTY()
+	TObjectPtr<UUserWidget> PauseHUD;
+	
+	UPROPERTY()
+	TObjectPtr<UUserWidget> GameOverHUD;
+	
+	UPROPERTY()
+	TObjectPtr<UUserWidget> GameWonHUD;
+
+
+	FTimerHandle InteractionTimerHandle;
+	TWeakObjectPtr<AActor> FocusedActor{};
 };

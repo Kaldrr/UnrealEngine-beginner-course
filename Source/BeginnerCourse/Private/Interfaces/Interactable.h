@@ -4,6 +4,17 @@
 
 #include "Interactable.generated.h"
 
+// Should be its own class, with more data and such
+// But eh, here we have only 1 interactable object, RotatingDoor
+// so just hard-code it as it is a beginner course anyway
+// also unreal enums need to have global scope :(
+UENUM()
+enum class EInteractionResult : uint8
+{
+	Success,
+	Failed
+};
+
 // A tag class, for Unreal reflection system
 // DO NOT PUT FUNCTIONS HERE
 UINTERFACE(MinimalAPI, Blueprintable)
@@ -30,10 +41,15 @@ class IInteractable
 
 public:
 	// Interact is a stub, managed by Unreal and implementable in Blueprints
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = Trigger)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = Interaction)
 	void Interact(AActor* Actor);
 
 	// C++ side function, that we implement to provide the logic on C++ side
 	// we also Call IInteractable::Execute_Interact, not functions directly!
 	virtual void Interact_Implementation(AActor* Actor) = 0;
+	
+	// Again, this really should use like IInteractionInstigator
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = Interaction)
+	EInteractionResult TryInteraction(const AActor* Actor);
+	virtual EInteractionResult TryInteraction_Implementation(const AActor* Actor) = 0;
 };

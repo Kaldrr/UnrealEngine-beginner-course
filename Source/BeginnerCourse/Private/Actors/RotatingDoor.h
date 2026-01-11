@@ -20,6 +20,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void Interact_Implementation(AActor* Actor) override;
+	virtual EInteractionResult TryInteraction_Implementation(
+	    const AActor* Actor) override;
 
 protected:
 	UFUNCTION()

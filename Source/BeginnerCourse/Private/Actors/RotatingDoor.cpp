@@ -70,3 +70,12 @@ void ARotatingDoor::Interact_Implementation(AActor* const Actor)
 		HasExecuted = true;
 	}
 }
+
+EInteractionResult ARotatingDoor::TryInteraction_Implementation(
+    const AActor* const Actor)
+{
+	const AMyCharacter* const MyCharacter = Cast<AMyCharacter>(Actor);
+	return MyCharacter && MyCharacter->GetOrbsCollected() >= 3
+	           ? EInteractionResult::Success
+	           : EInteractionResult::Failed;
+}
