@@ -34,6 +34,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	TObjectPtr<UMovementPatrolComponent> MovementComponent;
 
+	UPROPERTY(EditAnywhere, Category = "Sound")
+	TObjectPtr<USoundBase> FireSound;
+	
+	UPROPERTY(EditAnywhere, Category = "Sound")
+	TObjectPtr<UAudioComponent> FireAudioComponent;
+	
 private:
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent,

@@ -1,5 +1,6 @@
 #include "EnemySphere.h"
 
+#include "Components/AudioComponent.h"
 #include "GameLogic/MyCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -35,6 +36,17 @@ AEnemySphere::AEnemySphere()
 	MovementComponent =
 	    CreateDefaultSubobject<UMovementPatrolComponent>(TEXT("MovementComponent"));
 	MovementComponent->TargetComponent = SphereMesh;
+
+	FireAudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("FireSound"));
+	FireAudioComponent->SetupAttachment(SphereMesh);
+
+	const static ConstructorHelpers::FObjectFinder<USoundBase> DefaultFireSound{
+		TEXT("/Game/StarterContent/Audio/Fire01_Cue.Fire01_Cue")
+	};
+	if (DefaultFireSound.Succeeded())
+	{
+		FireSound = DefaultFireSound.Object;
+	}
 }
 
 void AEnemySphere::BeginPlay()
@@ -43,6 +55,10 @@ void AEnemySphere::BeginPlay()
 
 	SphereMesh->OnComponentBeginOverlap.AddDynamic(this,
 	                                               &AEnemySphere::OnBeginOverlap);
+
+	check(FireAudioComponent) check(FireSound);
+	FireAudioComponent->SetSound(FireSound);
+	FireAudioComponent->Play();
 }
 
 void AEnemySphere::OnBeginOverlap(
